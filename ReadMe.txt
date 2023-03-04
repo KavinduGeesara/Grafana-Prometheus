@@ -15,3 +15,59 @@
 7. sudo systemctl status grafana-server
 
 8. sudo systemctl enable grafana-server
+
+
+--Steps for Grafana installation--
+
+1. wget https://github.com/prometheus/prometheus/releases/download/v2.42.0/prometheus-2.42.0.linux-amd64.tar.gz
+
+2. tar xvf prometheus-2.42.0.linux-amd64.tar.gz
+
+3. sudo mv prometheus-2.42.0.linux-amd64 /usr/local/bin/prometheus
+
+4. Create a Prometheus configuration file /etc/prometheus/prometheus.yml and add the following contents:
+
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+
+5. Create a Prometheus service file /etc/systemd/system/prometheus.service and add the following contents:
+
+[Unit]
+Description=Prometheus Server
+Documentation=https://prometheus.io/docs/introduction/overview/
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/prometheus/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+6. mkdir /var/lib/prometheus
+
+7. sudo useradd -rs /bin/false prometheus
+
+8. sudo chown -R prometheus:prometheus /usr/local/bin/prometheus
+
+9. sudo chown -R prometheus:prometheus /etc/prometheus
+
+10. sudo chown -R prometheus:prometheus /var/lib/prometheus
+
+11. sudo systemctl daemon-reload
+
+12. sudo systemctl start prometheus
+
+13. sudo systemctl enable prometheus
+
