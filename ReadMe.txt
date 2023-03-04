@@ -105,3 +105,5 @@ WantedBy=multi-user.target
 7. sudo systemctl enable node_exporter
 
 8. systemctl start node_exporter
+
+9. Log into Prometheus installed server and vi /etc/prometheus/prometheus.yml file and add the node exporter installed server's ip and port under target section and restart prometheus service.
