@@ -71,3 +71,37 @@ WantedBy=multi-user.target
 
 13. sudo systemctl enable prometheus
 
+
+
+==Install Node Exporter==
+
+1. wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
+
+2. tar xvf node_exporter-1.5.0.linux-amd64.tar.gz
+
+3. mv node_exporter-1.5.0.linux-amd64 /usr/local/bin/
+
+4. sudo useradd --no-create-home --shell /bin/false node_exporter
+
+5. vi /etc/systemd/system/node_exporter.service
+
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter-1.5.0.linux-amd64/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+
+
+6. sudo systemctl daemon-reload
+
+7. sudo systemctl enable node_exporter
+
+8. systemctl start node_exporter
