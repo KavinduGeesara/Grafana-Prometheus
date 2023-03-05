@@ -17,7 +17,7 @@
 8. sudo systemctl enable grafana-server
 
 
---Steps for Grafana installation--
+--Steps for Prometheus installation--
 
 1. wget https://github.com/prometheus/prometheus/releases/download/v2.42.0/prometheus-2.42.0.linux-amd64.tar.gz
 
